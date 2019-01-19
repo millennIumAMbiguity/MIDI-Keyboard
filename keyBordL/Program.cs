@@ -42,7 +42,7 @@ namespace keyBordL
                         {
                             Program.runSetup = false;
                         }
-                        value = Program.midi.p[0];
+                        value = Program.midi.p;
                         if (old != value)
                         {
                             valueHex = Program.midi.pS;
@@ -167,7 +167,7 @@ namespace keyBordL
                         {
                             Program.runPogram = false;
                         }
-                        int value = Program.midi.p[0];
+                        int value = Program.midi.p;
                         if (old2 != value)
                         {
 
@@ -252,7 +252,7 @@ namespace keyBordL
                         {
                             Program.runViewer = false;
                         }
-                        value = Program.midi.p[0];
+                        value = Program.midi.p;
                         if (old != value)
                         {
                             valueHex = Program.midi.pS;

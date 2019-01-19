@@ -8,7 +8,7 @@ namespace keyBordL.dataFolder
         private NativeMethods.MidiInProc midiInProc;
         private IntPtr handle;
 
-        public int[] p = new int[2];
+        public int p = 0;
         public string pS = "";
 
         public InputPort()
@@ -60,17 +60,13 @@ namespace keyBordL.dataFolder
             int dwParam1,
             int dwParam2)
         {
-            //Console.WriteLine("- "+ wMsg + " \t" + dwParam1 + " \t" + dwParam2);
 
-            int myInt = dwParam1;
-            pS = myInt.ToString("X").PadLeft(4, '0');  // Gives you hexadecimal
-
-            p = new int[] {
-                dwParam1,
-                dwParam2};
+            pS = dwParam1.ToString("X").PadLeft(4, '0');  // Gives you hexadecimal
+            p = dwParam1;
 
             // Receive messages here
         }
+
     }
 
     internal static class NativeMethods
