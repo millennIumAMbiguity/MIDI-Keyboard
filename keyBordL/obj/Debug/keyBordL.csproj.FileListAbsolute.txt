@@ -1,0 +1,13 @@
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\keyBordL.exe.config
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\keyBordL.exe
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\keyBordL.pdb
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\obj\Debug\keyBordL.csprojAssemblyReference.cache
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\obj\Debug\keyBordL.csproj.CoreCompileInputs.cache
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\obj\Debug\keyBordL.exe
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\obj\Debug\keyBordL.pdb
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\WindowsInput.dll
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\WindowsInput.xml
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\obj\Debug\keyBordL.csproj.CopyComplete
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\WindowsInput.pdb
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\NAudio.dll
+C:\Users\S.K.L. Jonasson\Source\Repos\keyBordL\keyBordL\bin\Debug\NAudio.xml
