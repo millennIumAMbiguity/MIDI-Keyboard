@@ -272,6 +272,12 @@ namespace keyBordL
                             }
                             else
                             {
+                                /*
+                                if (valueHex.Length > 4)
+                                {
+                                    
+                                }*/
+
                                 Console.Write(valueHex.PadLeft(6, ' ').Substring(0, 2));
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.Write(hex4 + " ");

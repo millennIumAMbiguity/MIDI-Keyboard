@@ -1,0 +1,11 @@
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\bin\Debug\keyBordL.exe.config
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\bin\Debug\keyBordL.exe
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\bin\Debug\keyBordL.pdb
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\bin\Debug\WindowsInput.dll
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\bin\Debug\WindowsInput.pdb
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\bin\Debug\WindowsInput.xml
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.csprojAssemblyReference.cache
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.csproj.CoreCompileInputs.cache
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.csproj.CopyComplete
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.exe
+E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.pdb
