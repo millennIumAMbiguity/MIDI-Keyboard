@@ -47,7 +47,11 @@ namespace keyBordL
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(" ___ __ __    ________  ______    ________      ___   ___   ______   __  __   ______      \n/__//_//_/\\  /_______/\\/_____/\\  /_______/\\    /___/\\/__/\\ /_____/\\ /_/\\/_/\\ /_____/\\     \n\\::\\| \\| \\ \\ \\__.::._\\/\\:::_ \\ \\ \\__.::._\\/    \\::.\\ \\\\ \\ \\\\::::_\\/_\\ \\ \\ \\ \\\\::::_\\/_    \n \\:.      \\ \\   \\::\\ \\  \\:\\ \\ \\ \\   \\::\\ \\      \\:: \\/_) \\ \\\\:\\/___/\\\\:\\_\\ \\ \\\\:\\/___/\\   \n  \\:.\\-/\\  \\ \\  _\\::\\ \\__\\:\\ \\ \\ \\  _\\::\\ \\__    \\:. __  ( ( \\::___\\/_\\::::_\\/ \\_::._\\:\\  \n   \\. \\  \\  \\ \\/__\\::\\__/\\\\:\\/.:| |/__\\::\\__/\\    \\: \\ )  \\ \\ \\:\\____/\\ \\::\\ \\   /____\\:\\ \n    \\__\\/ \\__\\/\\________\\/ \\____/_/\\________\\/     \\__\\/\\__\\/  \\_____\\/  \\__\\/   \\_____\\/ \n");
                 Console.ResetColor();
-                Console.WriteLine("1. fast setup\n2. setup\n3. visual setup\n4. run\n5. viewer\n6. viewer output\n7. viewer output visual\n8. quit");
+                Console.Write("1. fast setup\n");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("2. setup\n3. visual setup");
+                Console.ResetColor();
+                Console.Write("\n4. run\n5. viewer\n6. viewer output\n7. viewer output visual\n8. quit\n");
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.D1:
