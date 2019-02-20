@@ -11,6 +11,7 @@ namespace keyBordL
     {
 
         private static InputPort midi = new InputPort();
+        private static InputSimulator IS = new InputSimulator();
 
         public static bool Run_(bool runPogram)
         {
@@ -55,7 +56,6 @@ namespace keyBordL
             int old2 = 0;
             midi.Open(chanel);
             midi.Start();
-            InputSimulator IS = new InputSimulator();
             string valueHex = "", valueHex4 = "0000";
             Console.WriteLine("runing...   //press any key to stop");
             while (runPogram)
@@ -97,6 +97,27 @@ namespace keyBordL
                                     Console.WriteLine(sb);
                                     break;
                                 }
+                                else if (Program.values[j][1] == 2) // addonkey
+                                {
+                                    StringBuilder sb = new StringBuilder();
+                                    if (valueHex.Length > 4)
+                                    {
+                                        sb.Append("Key_Down '");
+                                        sb.Append(Program.values[j][2]);
+                                        sb.Append(AddonButton(true));
+                                        IS.Keyboard.KeyDown((VirtualKeyCode)((ushort)Program.values[j][2]));
+                                    }
+                                    else
+                                    {
+                                        sb.Append("Key_Up '");
+                                        IS.Keyboard.KeyUp((VirtualKeyCode)((ushort)Program.values[j][2]));
+                                        sb.Append(Program.values[j][2]);
+                                        sb.Append(AddonButton(false));
+                                    }
+                                    sb.Append("' on:");
+                                    Console.WriteLine(sb);
+                                    break;
+                                }
                                 else if (Program.values[j][1] == 1 && valueHex.Length > 4) // macro
                                 {
                                     StringBuilder sb = new StringBuilder("macro '");
@@ -131,6 +152,27 @@ namespace keyBordL
             midi.Close();
             Program.teken = 0;
             return runPogram;
+        }
+
+
+        private static bool addonButtonActive = false;
+        private static VirtualKeyCode addonButtonKey = VirtualKeyCode.F24;
+        private static string AddonButton(bool keyStatus)
+        {
+            if (addonButtonActive == keyStatus)
+                return "";
+
+            addonButtonActive = keyStatus;
+
+            if (addonButtonActive)
+            {
+                IS.Keyboard.KeyDown(addonButtonKey);
+            }
+            else
+            {
+                IS.Keyboard.KeyUp(addonButtonKey);
+            }
+            return (" + " + addonButtonKey.ToString());
         }
 
     }

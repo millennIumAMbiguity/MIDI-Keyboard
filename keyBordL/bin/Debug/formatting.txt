@@ -13,6 +13,16 @@ midi_key_down_id
 
 
 
+single key action with 'F24' as addonkey:
+
+midi_key_down_id
+  \/
+8323216,2,66 <- key_action   //in this case 'b'
+	/\
+ key_indedification
+
+
+
 
 macro actions:
 
