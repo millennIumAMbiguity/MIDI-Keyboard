@@ -46,8 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="dataFolder\midi.cs" />
+    <Compile Include="programChapter\OutViewer.cs" />
+    <Compile Include="programChapter\OutViewerVisual.cs" />
+    <Compile Include="programChapter\FastSetup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="programChapter\Run.cs" />
+    <Compile Include="programChapter\Viewer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
