@@ -15,7 +15,7 @@ namespace keyBordL
         public static bool OutViewerVisual_(bool runOutViewerVisual_)
         {
             runOutViewerVisual = runOutViewerVisual_;
-            Console.WriteLine("what midi port do you whant to use \n(0 to {0})", midi.OutputCount());
+            Console.WriteLine("what midi port do you whant to use");
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 for (int i = 0; i < midi.OutputCount(); i++)

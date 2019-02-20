@@ -18,7 +18,7 @@ namespace keyBordL
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Warning: you will now overwrite the data.txt file! any old setups will be deleted.\n");
             Console.ResetColor();
-            Console.WriteLine("what midi port do you whant to use \n(0 to {0})", midi.InputCount());
+            Console.WriteLine("what midi port do you whant to use");
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 for (int i = 0; i < midi.InputCount(); i++)
@@ -33,11 +33,13 @@ namespace keyBordL
                 Console.ResetColor();
             }
             Console.Write("port: ");
-            int resultat;
-            int.TryParse(Console.ReadLine(), out resultat);
+            int.TryParse(Console.ReadLine(), out int resultat);
             Console.WriteLine("value set to " + resultat);
             int chanel = resultat;
-            Console.WriteLine("\npress the midi keys you whant to use, and wen you're done press any key on your keybord\n");
+            Console.Write("\nkeymode: \n  0. default \n  1. macro mode \n  2. 'F24' addon key (useful for autohotkey) \nmode: ");
+            int.TryParse(Console.ReadLine(), out int keyMode);
+            Console.WriteLine("value set to " + keyMode);
+            Console.WriteLine("\npress the midi keys you want to use, and when you're done press any key on your keyboard\n");
             midi.Open(chanel);
             midi.Start();
             int old = 0;
@@ -79,7 +81,7 @@ namespace keyBordL
                                 Program.values.Add(new int[]
                                 {
                                             hex4Con,
-                                            0,
+                                            keyMode,
                                             Program.getTeken()
                                 });
                             }
