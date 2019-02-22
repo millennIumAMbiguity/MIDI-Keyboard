@@ -1,6 +1,9 @@
 data.txt fromating
 
-on the first row is the chanel. after that is all of the combinations that you have made.
+3,3,55,72,44,40
+"chanel in","chanel out","pitch","velocity","pitch","velocity"...
+
+on the first row is the chanels and colors. after that is all of the combinations that you have made.
 
 
 single key action:

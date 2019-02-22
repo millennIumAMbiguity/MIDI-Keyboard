@@ -90,10 +90,10 @@ namespace keyBordL
 
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("\n");
-                for (int x = 0; x < linesInt[0].Length; x++)
+                for (int x = 0; x < linesInt.Length; x++)
                 {
                     Console.Write(" ");
-                    for (int y = 0; y < linesInt.Length; y++)
+                    for (int y = 0; y < linesInt[0].Length; y++)
                     {
                         if (linesInt[x][y] == -1)
                             Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -164,6 +164,31 @@ namespace keyBordL
                 }
 
             }
+
+            if (File.Exists("data.txt"))
+            {
+                Console.WriteLine();
+                Console.Write("save to data.txt? (will overwrite any existing color data) (y/n) ");
+                switch (Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Enter:
+                    case ConsoleKey.D1:
+                    case ConsoleKey.Y:
+                        var allLines = File.ReadAllLines("data.txt");
+                        allLines[0] = allLines[0].Split(',')[0] + "," + resultat2;
+
+                        for (int i = 0; i < usedShit.Count; i++)
+                        {
+                            allLines[0] += "," + usedShit[i][0] + "," + usedShit[i][1];
+                        }
+
+                        File.WriteAllLines("data.txt", allLines);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             Console.WriteLine();
             Console.Write("0 set all? (y/n) ");
             switch (Console.ReadKey().Key)
@@ -182,7 +207,7 @@ namespace keyBordL
 
             midi.CloseOut();
 
-            return runOutViewerVisual;
+            return false;
 
         }
 
@@ -213,8 +238,11 @@ namespace keyBordL
                     case ConsoleKey.D8:
                     case ConsoleKey.D9:
                     case ConsoleKey.D0:
-                    case ConsoleKey.Backspace:
                         outLoop += key.KeyChar;
+                        break;
+                    case ConsoleKey.Backspace:
+                    case ConsoleKey.Delete:
+                        outLoop = "";
                         break;
                     default:
                         break;

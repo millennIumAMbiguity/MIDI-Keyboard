@@ -17,12 +17,31 @@ namespace keyBordL
         {
 
             int chanel = 0;
+            string[] array = new string[] { };
 
             if (Program.values.Count < 1)
             {
                 Console.WriteLine("loading from file...");
-                string[] array = File.ReadAllLines("data.txt");
-                chanel = int.Parse(array[0]);
+                array = File.ReadAllLines("data.txt");
+                chanel = int.Parse(array[0].Split(',')[0]);
+
+                //color
+                if (array[0].Split(',').Length > 1){
+                    string[] ColorArray = array[0].Split(',');
+
+                    InputPort midiOut = new InputPort();
+                    midiOut.OpenOut(int.Parse(ColorArray[1]));
+
+                    for (int i = 2; i+1 < ColorArray.Length; i += 2)
+                    {
+                        int x = int.Parse(ColorArray[i]);
+                        midiOut.MidiOutMsg((Byte)x, (Byte)(x + 1));
+                    }
+
+                    midiOut.CloseOut();
+                }
+
+
                 foreach (string line2 in array)
                 {
                     if (line2 != string.Concat(chanel))
@@ -151,7 +170,25 @@ namespace keyBordL
             midi.Stop();
             midi.Close();
             Program.teken = 0;
-            return runPogram;
+
+            //color
+            if (array[0].Split(',').Length > 1)
+            {
+                string[] ColorArray = array[0].Split(',');
+
+                InputPort midiOut = new InputPort();
+                midiOut.OpenOut(int.Parse(ColorArray[1]));
+
+                for (int i = 2; i + 1 < ColorArray.Length; i += 2)
+                {
+                    int x = int.Parse(ColorArray[i]);
+                    midiOut.MidiOutMsg((Byte)x, (Byte)(0));
+                }
+
+                midiOut.CloseOut();
+            }
+
+            return false;
         }
 
 
