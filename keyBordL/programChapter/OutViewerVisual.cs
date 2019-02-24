@@ -167,15 +167,24 @@ namespace keyBordL
 
             if (File.Exists("data.txt"))
             {
+                string[] allLines;
                 Console.WriteLine();
-                Console.Write("save to data.txt? (will overwrite any existing color data) (y/n) ");
+                Console.Write("save to data.txt? \n1. overwrite old color profile.\n2. add to the existing color profile. ");
                 switch (Console.ReadKey().Key)
                 {
-                    case ConsoleKey.Enter:
                     case ConsoleKey.D1:
-                    case ConsoleKey.Y:
-                        var allLines = File.ReadAllLines("data.txt");
+                        allLines = File.ReadAllLines("data.txt");
                         allLines[0] = allLines[0].Split(',')[0] + "," + resultat2;
+
+                        for (int i = 0; i < usedShit.Count; i++)
+                        {
+                            allLines[0] += "," + usedShit[i][0] + "," + usedShit[i][1];
+                        }
+
+                        File.WriteAllLines("data.txt", allLines);
+                        break;
+                    case ConsoleKey.D2:
+                        allLines = File.ReadAllLines("data.txt");
 
                         for (int i = 0; i < usedShit.Count; i++)
                         {
