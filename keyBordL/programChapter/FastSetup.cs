@@ -112,6 +112,7 @@ namespace keyBordL
                 }
             }
             midi.Stop();
+            midi.Close();
             using (StreamWriter file = new StreamWriter("data.txt"))
             {
                 file.WriteLine(chanel);

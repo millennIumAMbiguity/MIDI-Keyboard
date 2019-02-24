@@ -76,7 +76,7 @@ namespace keyBordL
             midi.Open(chanel);
             midi.Start();
             string valueHex = "", valueHex4 = "0000";
-            Console.WriteLine("runing...   //press any key and then any active midi key to stop");
+            Console.WriteLine("runing...   //press any active midi while application is active key to stop");
             while (runPogram)
             {
                 if (Console.KeyAvailable)

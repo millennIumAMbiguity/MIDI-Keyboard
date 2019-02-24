@@ -169,7 +169,7 @@ namespace keyBordL
             {
                 string[] allLines;
                 Console.WriteLine();
-                Console.Write("save to data.txt? \n1. overwrite old color profile.\n2. add to the existing color profile. ");
+                Console.Write("save to data.txt? \n1. overwrite old color profile.\n2. add to the existing color profile.\n3. dont save.\n ");
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.D1:

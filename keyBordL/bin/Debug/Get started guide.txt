@@ -1,0 +1,16 @@
+step 1. plug in your MIDI device.
+step 2. start 'keyBordL.exe'.
+step 3. press '1' in order to enter 'fast setup'.
+step 4. select your MIDI device.
+step 5. press all MIDI keys/button you want to register.
+step 6. press any key to save and continue.
+step 7. press '4' in order to enter 'run'.
+
+complete! 
+
+note 1: 
+don't press any MIDI keys or keyboard key while the application is active, 
+because this will cause the application to exit 'run' mode.
+
+note 2: 
+if something doesn't work, try to restart the application.
