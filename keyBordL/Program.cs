@@ -11,6 +11,10 @@ namespace keyBordL
     // Token: 0x02000002 RID: 2
     internal class Program
     {
+
+        static public readonly System.Threading.EventWaitHandle waitHandle = new System.Threading.AutoResetEvent(false);
+
+
         // Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
         private static void Main(string[] args)
         {
@@ -21,26 +25,28 @@ namespace keyBordL
                 Console.Clear();
                 if (Program.runFastSetup)
                 {
-                    runFastSetup = FastSetup.FastSetup_(runFastSetup);
+                    FastSetup.FastSetup_(runFastSetup);
+                    runFastSetup = false;
                 }
                 if (Program.runPogram)
                 {
-                    runPogram = Run.Run_(runPogram);
+                    Run.Run_(runPogram);
+                    runPogram = false;
                 }
                 if (Program.runViewer)
                 {
-                    runViewer = Viewer.Viewer_(runViewer);
-
+                    Viewer.Viewer_(runViewer);
+                    runViewer = false;
                 }
                 if (Program.runOutViewer)
                 {
-                    
-                    runOutViewerVisual = OutViewer.OutViewer_(runOutViewer);
+                    OutViewer.OutViewer_(runOutViewer);
+                    runOutViewerVisual = false;
                 }
                 if (Program.runOutViewerVisual)
                 {
-                    runOutViewerVisual = OutViewerVisual.OutViewerVisual_(runOutViewerVisual);
-
+                    OutViewerVisual.OutViewerVisual_(runOutViewerVisual);
+                    runOutViewerVisual = false;
                 }
 
                 Console.Clear();

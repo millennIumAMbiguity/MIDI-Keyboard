@@ -76,13 +76,16 @@ namespace keyBordL
             midi.Open(chanel);
             midi.Start();
             string valueHex = "", valueHex4 = "0000";
-            Console.WriteLine("runing...   //press any key to stop");
+            Console.WriteLine("runing...   //press any key and then any active midi key to stop");
             while (runPogram)
             {
                 if (Console.KeyAvailable)
                 {
                     runPogram = false;
                 }
+
+                Program.waitHandle.WaitOne();
+
                 int value = midi.p;
                 if (old2 != value)
                 {
@@ -166,6 +169,7 @@ namespace keyBordL
 
 
                 }
+                Program.waitHandle.Reset();
             }
             midi.Stop();
             midi.Close();

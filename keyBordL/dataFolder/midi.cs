@@ -70,6 +70,8 @@ namespace keyBordL.dataFolder
             pS = dwParam1.ToString("X").PadLeft(4, '0');  // Gives you hexadecimal
             p = dwParam1;
 
+            Program.waitHandle.Set();
+
             // Receive messages here
         }
 
