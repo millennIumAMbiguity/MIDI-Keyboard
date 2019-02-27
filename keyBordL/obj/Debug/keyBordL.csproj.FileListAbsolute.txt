@@ -9,3 +9,14 @@ E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBo
 E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.csproj.CopyComplete
 E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.exe
 E:\S.K.L\Documents\Visual Studio 2017\Projects\keyBordL\keyBordL\obj\Debug\keyBordL.pdb
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\bin\Debug\keyBordL.exe.config
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\bin\Debug\keyBordL.exe
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\bin\Debug\keyBordL.pdb
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\bin\Debug\WindowsInput.dll
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\bin\Debug\WindowsInput.pdb
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\bin\Debug\WindowsInput.xml
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\obj\Debug\keyBordL.csprojResolveAssemblyReference.cache
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\obj\Debug\keyBordL.csproj.CoreCompileInputs.cache
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\obj\Debug\keyBordL.csproj.CopyComplete
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\obj\Debug\keyBordL.exe
+C:\Users\Simon C. L. Jonasson\Documents\MIDI-Keyboard_master\keyBordL\obj\Debug\keyBordL.pdb

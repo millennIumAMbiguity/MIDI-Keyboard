@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using keyBordL.dataFolder;
 using WindowsInput;
 using WindowsInput.Native;
@@ -34,8 +35,7 @@ namespace keyBordL
 
                     for (int i = 2; i+1 < ColorArray.Length; i += 2)
                     {
-                        int x = int.Parse(ColorArray[i]);
-                        midiOut.MidiOutMsg((Byte)x, (Byte)(x + 1));
+                        midiOut.MidiOutMsg((Byte)int.Parse(ColorArray[i]), (Byte)int.Parse(ColorArray[i+1]));
                     }
 
                     midiOut.CloseOut();
@@ -213,6 +213,7 @@ namespace keyBordL
             {
                 IS.Keyboard.KeyUp(addonButtonKey);
             }
+            
             return (" + " + addonButtonKey.ToString());
         }
 
