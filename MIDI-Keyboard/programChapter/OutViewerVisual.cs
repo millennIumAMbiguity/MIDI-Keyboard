@@ -9,7 +9,7 @@ namespace keyBordL
     class OutViewerVisual
     {
 
-        private static InputPort midi = new InputPort();
+        private static readonly InputPort midi = new InputPort();
         static bool runOutViewerVisual;
 
         public static bool OutViewerVisual_(bool runOutViewerVisual_)
@@ -18,8 +18,7 @@ namespace keyBordL
             Console.WriteLine("what midi port do you whant to use");
             {
                 Console.ForegroundColor = ConsoleColor.Black;
-                for (int i = 0; i < midi.OutputCount(); i++)
-                {
+                for (int i = 0; i < midi.OutputCount(); i++) {
                     if (i % 2 == 0)
                         Console.BackgroundColor = ConsoleColor.Gray;
                     else
@@ -30,17 +29,16 @@ namespace keyBordL
                 Console.ResetColor();
             }
             Console.Write("port: ");
-            int resultat2;
-            int.TryParse(Console.ReadLine(), out resultat2);
+            int.TryParse(Console.ReadLine(), out int resultat2);
             Console.WriteLine("value set to " + resultat2);
             Console.WriteLine("press ESC to exit");
             int chanel = resultat2;
             midi.OpenOut(chanel);
 
 
-            int[][] linesInt = new int[0][];
-
             string path = @"visualProfiles\";
+
+            int[][] linesInt;
             {
 
 
@@ -51,8 +49,7 @@ namespace keyBordL
                 string[] files = Directory.GetFiles(path);
 
                 Console.ForegroundColor = ConsoleColor.Black;
-                for (int i = 0; i < files.Length; i++)
-                {
+                for (int i = 0; i < files.Length; i++) {
                     if (i % 2 == 0)
                         Console.BackgroundColor = ConsoleColor.Gray;
                     else
@@ -61,19 +58,16 @@ namespace keyBordL
                     Console.WriteLine(i + ".\t" + files[i].Split('\\')[1].PadRight(32, ' '));
                 }
                 Console.ResetColor();
-                int datat;
-                int.TryParse(Console.ReadLine(), out datat);
+                int.TryParse(Console.ReadLine(), out int datat);
                 path = files[datat];
 
 
                 string[] lines = File.ReadAllLines(path, Encoding.UTF8);
                 linesInt = new int[lines.Length][];
-                for (int i = 0; i < lines.Length; i++)
-                {
+                for (int i = 0; i < lines.Length; i++) {
                     string[] linesS = lines[i].Split(',');
                     linesInt[i] = new int[linesS.Length];
-                    for (int k = 0; k < linesS.Length; k++)
-                    {
+                    for (int k = 0; k < linesS.Length; k++) {
                         linesInt[i][k] = int.Parse(linesS[k]);
                     }
                 }
@@ -83,53 +77,41 @@ namespace keyBordL
 
             List<byte[]> usedShit = new List<byte[]>();
 
-            while (runOutViewerVisual)
-            {
+            while (runOutViewerVisual) {
                 Console.Clear();
 
 
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("\n");
-                for (int x = 0; x < linesInt.Length; x++)
-                {
+                for (int x = 0; x < linesInt.Length; x++) {
                     Console.Write(" ");
-                    for (int y = 0; y < linesInt[0].Length; y++)
-                    {
+                    for (int y = 0; y < linesInt[0].Length; y++) {
                         if (linesInt[x][y] == -1)
                             Console.BackgroundColor = ConsoleColor.DarkGray;
-                        else
-                        {
+                        else {
                             Console.BackgroundColor = ConsoleColor.Gray;
-                            foreach (byte[] item in usedShit)
-                            {
-                                if (item[0] == linesInt[x][y])
-                                {
+                            foreach (byte[] item in usedShit) {
+                                if (item[0] == linesInt[x][y]) {
                                     Console.BackgroundColor = ConsoleColor.White;
                                     break;
                                 }
                             }
                         }
-                        Console.Write(" "+linesInt[x][y].ToString().PadRight(3, ' '));
+                        Console.Write(" " + linesInt[x][y].ToString().PadRight(3, ' '));
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.Write(" ");
                     }
                     Console.Write("\n");
                     Console.Write(" ");
-                    for (int y = 0; y < linesInt.Length; y++)
-                    {
-                        if (linesInt[x][y] == -1)
-                        {
+                    for (int y = 0; y < linesInt.Length; y++) {
+                        if (linesInt[x][y] == -1) {
                             Console.BackgroundColor = ConsoleColor.DarkGray;
                             Console.Write("    ");
-                        }
-                        else
-                        {
+                        } else {
                             Console.BackgroundColor = ConsoleColor.Gray;
                             string xx = " ";
-                            foreach (byte[] item in usedShit)
-                            {
-                                if (item[0] == linesInt[x][y])
-                                {
+                            foreach (byte[] item in usedShit) {
+                                if (item[0] == linesInt[x][y]) {
                                     Console.BackgroundColor = ConsoleColor.White;
                                     xx += item[1].ToString();
                                     break;
@@ -147,17 +129,15 @@ namespace keyBordL
                 int[] outMsg = new int[2];
 
                 Console.Write("Pitch: ");
-                outMsg[0] = inputV2();
-                if (runOutViewerVisual)
-                {
+                outMsg[0] = InputV2();
+                if (runOutViewerVisual) {
 
                     Console.Write("Velocity: ");
-                    outMsg[1] = inputV2();
+                    outMsg[1] = InputV2();
                     Console.WriteLine();
                 }
 
-                if (runOutViewerVisual)
-                {
+                if (runOutViewerVisual) {
 
                     usedShit.Add(new byte[] { (byte)outMsg[0], (byte)outMsg[1] });
                     midi.MidiOutMsg((byte)outMsg[0], (byte)outMsg[1]);
@@ -165,19 +145,16 @@ namespace keyBordL
 
             }
 
-            if (File.Exists("data.txt"))
-            {
+            if (File.Exists("data.txt")) {
                 string[] allLines;
                 Console.WriteLine();
                 Console.Write("save to data.txt? \n1. overwrite old color profile.\n2. add to the existing color profile.\n3. dont save.\n ");
-                switch (Console.ReadKey().Key)
-                {
+                switch (Console.ReadKey().Key) {
                     case ConsoleKey.D1:
                         allLines = File.ReadAllLines("data.txt");
                         allLines[0] = allLines[0].Split(',')[0] + "," + resultat2;
 
-                        for (int i = 0; i < usedShit.Count; i++)
-                        {
+                        for (int i = 0; i < usedShit.Count; i++) {
                             allLines[0] += "," + usedShit[i][0] + "," + usedShit[i][1];
                         }
 
@@ -186,8 +163,7 @@ namespace keyBordL
                     case ConsoleKey.D2:
                         allLines = File.ReadAllLines("data.txt");
 
-                        for (int i = 0; i < usedShit.Count; i++)
-                        {
+                        for (int i = 0; i < usedShit.Count; i++) {
                             allLines[0] += "," + usedShit[i][0] + "," + usedShit[i][1];
                         }
 
@@ -200,13 +176,11 @@ namespace keyBordL
 
             Console.WriteLine();
             Console.Write("0 set all? (y/n) ");
-            switch (Console.ReadKey().Key)
-            {
+            switch (Console.ReadKey().Key) {
                 case ConsoleKey.Enter:
                 case ConsoleKey.D1:
                 case ConsoleKey.Y:
-                    foreach (byte[] item in usedShit)
-                    {
+                    foreach (byte[] item in usedShit) {
                         midi.MidiOutMsg(item[0], 0);
                     }
                     break;
@@ -220,16 +194,14 @@ namespace keyBordL
 
         }
 
-        static int inputV2()
+        static int InputV2()
         {
             bool loop = true;
             string outLoop = "";
 
-            while (loop)
-            {
+            while (loop) {
                 ConsoleKeyInfo key = Console.ReadKey();
-                switch (key.Key)
-                {
+                switch (key.Key) {
                     case ConsoleKey.Escape:
                         runOutViewerVisual = false;
                         loop = false;
@@ -257,8 +229,7 @@ namespace keyBordL
                         break;
                 }
             }
-            int outP;
-            int.TryParse(outLoop, out outP);
+            int.TryParse(outLoop, out int outP);
             return outP;
         }
 

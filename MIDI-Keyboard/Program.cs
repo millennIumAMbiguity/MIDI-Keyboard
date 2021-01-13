@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using keyBordL.dataFolder;
-using WindowsInput;
-using WindowsInput.Native;
 
 namespace keyBordL
 {
@@ -18,6 +13,10 @@ namespace keyBordL
         // Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
         private static void Main(string[] args)
         {
+            if (args.Length > 0 && args[0] == "run") {
+                Program.runPogram = true;
+            }
+
             Console.Title = "MIDI KEYS";
 
             while (Program.runForm)
@@ -89,7 +88,7 @@ namespace keyBordL
         }
 
 
-        public static int getTeken()
+        public static int GetTeken()
         {
             Program.teken++;
             switch (Program.teken)
@@ -265,27 +264,20 @@ namespace keyBordL
 
         private static bool runForm = true;
 
-
         private static bool runFastSetup = false;
-
+#pragma warning disable IDE0052 // Remove unread private members
         private static bool runSetup = false;
-
         private static bool runVisualSetup = false;
+#pragma warning restore IDE0052 // Remove unread private members
 
-        
         private static bool runPogram = false;
 
-        
         private static bool runViewer = false;
-
         private static bool runOutViewer = false;
-
         private static bool runOutViewerVisual = false;
 
 
-
         public static IList<int[]> values = new List<int[]>();
-
 
 
         public static int teken = 0;

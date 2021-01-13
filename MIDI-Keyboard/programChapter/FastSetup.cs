@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using keyBordL.dataFolder;
@@ -9,7 +8,7 @@ namespace keyBordL
     class FastSetup
     {
 
-        private static InputPort midi = new InputPort();
+        private static readonly InputPort midi = new InputPort();
 
         public static bool FastSetup_(bool runFastSetup)
         {
@@ -43,8 +42,6 @@ namespace keyBordL
             midi.Open(chanel);
             midi.Start();
             int old = 0;
-            int value = 0;
-            string valueHex = "";
             string hex4 = "0000";
             while (runFastSetup)
             {
@@ -52,10 +49,10 @@ namespace keyBordL
                 {
                     runFastSetup = false;
                 }
-                value = midi.p;
+                int value = midi.p;
                 if (old != value)
                 {
-                    valueHex = midi.pS;
+                    string valueHex = midi.pS;
                     if (hex4 != valueHex.Substring(valueHex.Length - 4))
                     {
                         if (hex4.Substring(hex4.Length - 2) != "D0")
@@ -82,7 +79,7 @@ namespace keyBordL
                                 {
                                             hex4Con,
                                             keyMode,
-                                            Program.getTeken()
+                                            Program.GetTeken()
                                 });
                             }
                         }

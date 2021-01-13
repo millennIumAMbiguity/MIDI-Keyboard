@@ -6,14 +6,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D75B6212-1DC8-415B-8A07-AA80CF1F26DF}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>keyBordL</RootNamespace>
-    <AssemblyName>keyBordL</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>MIDIKeyboard</RootNamespace>
+    <AssemblyName>MIDI-Keyboard</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -46,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="dataFolder\midi.cs" />
+    <Compile Include="miscellaneous\Miscellaneous.cs" />
     <Compile Include="programChapter\OutViewer.cs" />
     <Compile Include="programChapter\OutViewerVisual.cs" />
     <Compile Include="programChapter\FastSetup.cs" />

@@ -5,8 +5,8 @@ namespace keyBordL.dataFolder
 {
     public class InputPort
     {
-        private NativeMethods.MidiInProc midiInProc;
-        private NativeMethods.MidiOutProc midiOutProc;
+        private readonly NativeMethods.MidiInProc midiInProc;
+        private readonly NativeMethods.MidiOutProc midiOutProc;
         private IntPtr handle, handleOut;
 
         public int p = 0;
@@ -113,9 +113,9 @@ namespace keyBordL.dataFolder
                 NativeMethods.CALLBACK_FUNCTION)
                     == NativeMethods.MMSYSERR_NOERROR;
         }
-        public bool midiOutReset()
+        public bool MidiOutReset()
         {
-            return (NativeMethods.midiOutReset(handleOut)) 
+            return (NativeMethods.MidiOutReset(handleOut)) 
                 == NativeMethods.MMSYSERR_NOERROR;
         }
 
@@ -124,6 +124,7 @@ namespace keyBordL.dataFolder
 
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     internal static class NativeMethods
     {
         internal const int MMSYSERR_NOERROR = 0;
@@ -143,16 +144,14 @@ namespace keyBordL.dataFolder
 
         public static string midiInGetDevCaps(IntPtr uDeviceID)
         {
-            NativeMethods.MIDIINCAPS caps;
-             NativeMethods.midiInGetDevCaps(uDeviceID, out caps,
-                (UInt32)Marshal.SizeOf(typeof(NativeMethods.MIDIINCAPS)));
+            NativeMethods.midiInGetDevCaps(uDeviceID, out MIDIINCAPS caps,
+               (UInt32)Marshal.SizeOf(typeof(NativeMethods.MIDIINCAPS)));
             return caps.szPname;
         }
 
         public static string midiOutGetDevCaps(IntPtr uDeviceID)
         {
-            NativeMethods.MIDIINCAPS caps;
-            NativeMethods.midiOutGetDevCaps(uDeviceID, out caps,
+            NativeMethods.midiOutGetDevCaps(uDeviceID, out MIDIINCAPS caps,
                (UInt32)Marshal.SizeOf(typeof(NativeMethods.MIDIINCAPS)));
             return caps.szPname;
         }
@@ -227,7 +226,7 @@ namespace keyBordL.dataFolder
             IntPtr hMidiIn);
 
         [DllImport("winmm.dll")]
-        internal static extern int midiOutReset(
+        internal static extern int MidiOutReset(
             IntPtr hMidiIn);
 
 
