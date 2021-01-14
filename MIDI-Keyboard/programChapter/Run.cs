@@ -19,6 +19,7 @@ namespace keyBordL
 
             int chanel = 0;
             string[] array = new string[] { };
+            bool error = false;
 
             if (Program.values.Count < 1) {
                 Console.WriteLine("loading from file...");
@@ -56,6 +57,7 @@ namespace keyBordL
                                 } else if (value.Length == 1) {
                                     tempValues[i] = GetID(value[0]);
                                 } else {
+                                    error = true;
                                     Console.ForegroundColor = ConsoleColor.Red;
                                     Console.WriteLine("Error at {0} \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
                                     Console.ResetColor();
@@ -81,12 +83,18 @@ namespace keyBordL
             int old2 = 0;
             midi.Open(chanel);
             midi.Start();
-            Console.WriteLine("runing...   //press any active midi while application is active key to stop");
+            if (error)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            else 
+                Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nruning...\n");
+            Console.ResetColor();
             while (runPogram) {
+                /*
                 if (Console.KeyAvailable) {
                     runPogram = false;
                 }
-
+                */
                 Program.waitHandle.WaitOne();
 
                 int value = midi.p;
@@ -102,28 +110,30 @@ namespace keyBordL
                                 if (Program.values[j][1] == 0) { // key
 
                                     StringBuilder sb = new StringBuilder();
+                                    VirtualKeyCode key = (VirtualKeyCode)Program.values[j][2];
                                     if (valueHex.Length > 4) {
                                         sb.Append("Key_Down '");
-                                        IS.Keyboard.KeyDown((VirtualKeyCode)((ushort)Program.values[j][2]));
+                                        IS.Keyboard.KeyDown(key);
                                     } else {
                                         sb.Append("Key_Up '");
-                                        IS.Keyboard.KeyUp((VirtualKeyCode)((ushort)Program.values[j][2]));
+                                        IS.Keyboard.KeyUp(key);
                                     }
-                                    sb.Append(Program.values[j][2]);
+                                    sb.Append(key.ToString());
                                     sb.Append("' on:");
                                     Console.WriteLine(sb);
                                     break;
                                 } else if (Program.values[j][1] == 2) { // addonkey
                                     StringBuilder sb = new StringBuilder();
+                                    VirtualKeyCode key = (VirtualKeyCode)Program.values[j][2];
                                     if (valueHex.Length > 4) {
                                         sb.Append("Key_Down '");
-                                        sb.Append(Program.values[j][2]);
+                                        sb.Append(key.ToString());
                                         sb.Append(AddonButton(true));
-                                        IS.Keyboard.KeyDown((VirtualKeyCode)((ushort)Program.values[j][2]));
+                                        IS.Keyboard.KeyDown(key);
                                     } else {
                                         sb.Append("Key_Up '");
-                                        IS.Keyboard.KeyUp((VirtualKeyCode)((ushort)Program.values[j][2]));
-                                        sb.Append(Program.values[j][2]);
+                                        IS.Keyboard.KeyUp(key);
+                                        sb.Append(key.ToString());
                                         sb.Append(AddonButton(false));
                                     }
                                     sb.Append("' on:");
@@ -133,11 +143,16 @@ namespace keyBordL
                                     StringBuilder sb = new StringBuilder("macro '");
                                     for (int k = 2; k < Program.values[j].Length; k++) {
                                         if (Program.values[j][k] > 0) {
-                                            IS.Keyboard.KeyDown((VirtualKeyCode)((ushort)Program.values[j][k]));
-                                            sb.Append("+" + Program.values[j][k] + "'");
+                                            VirtualKeyCode key = (VirtualKeyCode)Program.values[j][k];
+                                            IS.Keyboard.KeyDown(key);
+                                            sb.Append("+");
+                                            sb.Append(key.ToString());
+                                            sb.Append('\'');
                                         } else {
-                                            IS.Keyboard.KeyUp((VirtualKeyCode)((ushort)(-(ushort)Program.values[j][k])));
-                                            sb.Append(Program.values[j][k] + "'");
+                                            VirtualKeyCode key = (VirtualKeyCode)(-Program.values[j][k]);
+                                            IS.Keyboard.KeyUp(key);
+                                            sb.Append(key.ToString());
+                                            sb.Append('\'');
                                         }
                                     }
                                     sb.Append(" on:");
@@ -145,7 +160,6 @@ namespace keyBordL
                                     break;
                                 }
                             }
-
                         }
                     }
                     Console.WriteLine(valueHex + "\n");
@@ -168,7 +182,7 @@ namespace keyBordL
 
                 for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
                     int x = int.Parse(ColorArray[i]);
-                    midiOut.MidiOutMsg((Byte)x, (Byte)(0));
+                    midiOut.MidiOutMsg((byte)x, (byte)(0));
                 }
 
                 midiOut.CloseOut();
