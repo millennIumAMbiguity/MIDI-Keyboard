@@ -21,6 +21,7 @@ namespace keyBordL
             string[] array = new string[] { };
             bool error = false;
 
+            //load data
             if (Program.values.Count < 1) {
                 Console.WriteLine("loading from file...");
                 array = File.ReadAllLines("data.txt");
@@ -31,10 +32,11 @@ namespace keyBordL
                     string[] ColorArray = array[0].Split(',');
 
                     InputPort midiOut = new InputPort();
-                    midiOut.OpenOut(int.Parse(ColorArray[1]));
+                    midiOut.OpenOut(int.Parse(ColorArray[1].Trim()));
 
+                    //send output
                     for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
-                        midiOut.MidiOutMsg((byte)int.Parse(ColorArray[i]), (byte)int.Parse(ColorArray[i + 1]));
+                        midiOut.MidiOutMsg((byte)int.Parse(ColorArray[i].Trim()), (byte)int.Parse(ColorArray[i + 1].Trim()));
                     }
 
                     midiOut.CloseOut();
@@ -52,17 +54,27 @@ namespace keyBordL
                                 string[] convertValue;
                                 if ((convertValue = value.Split('\'')).Length > 1) {
                                     tempValues[i] = GetID(convertValue[1][0]);
+                                    if (convertValue[0][convertValue[0].Length - 1] == '-') {
+                                        tempValues[i] = -tempValues[i];
+                                    }
                                 } else if ((convertValue = value.Split('"')).Length > 1) {
                                     tempValues[i] = GetID(convertValue[1][0]);
+                                    if (convertValue[0][convertValue[0].Length - 1] == '-') {
+                                        tempValues[i] = -tempValues[i];
+                                    }
                                 } else if (value.Length == 1) {
                                     tempValues[i] = GetID(value[0]);
                                 } else {
-                                    error = true;
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("Error at {0} \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
-                                    Console.ResetColor();
-                                    Console.WriteLine("Press any key to ignore and continue...");
-                                    Console.ReadKey();
+                                    if (value.Length == 2 && value[0] == '-') {
+                                        tempValues[i] = -GetID(value[1]);
+                                    } else {
+                                        error = true;
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
+                                        Console.ResetColor();
+                                        Console.WriteLine("Press any key to ignore and continue...");
+                                        Console.ReadKey();
+                                    }
                                 }
                             }
                             log.Append(value);
@@ -72,6 +84,13 @@ namespace keyBordL
                         Console.WriteLine(log);
                     }
                 }
+            } else {
+                error = true;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error -> No data.");
+                Console.ResetColor();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
             }
 
             string[] valuesHex = new string[Program.values.Count];
@@ -85,7 +104,7 @@ namespace keyBordL
             midi.Start();
             if (error)
                 Console.ForegroundColor = ConsoleColor.Yellow;
-            else 
+            else
                 Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nruning...\n");
             Console.ResetColor();
