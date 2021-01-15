@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using keyBordL.dataFolder;
+using MIDIKeyboard.dataFolder;
 
-namespace keyBordL
+namespace MIDIKeyboard
 {
     class OutViewer
     {

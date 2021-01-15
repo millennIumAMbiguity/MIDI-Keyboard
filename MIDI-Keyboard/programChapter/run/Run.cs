@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using keyBordL.dataFolder;
+using MIDIKeyboard.dataFolder;
 using WindowsInput;
 using WindowsInput.Native;
 using static MIDIKeyboard.miscellaneous.Miscellaneous;
 
-namespace keyBordL
+namespace MIDIKeyboard.Run
 {
     class Run
     {
@@ -230,26 +230,7 @@ namespace keyBordL
             return (" + " + addonButtonKey.ToString());
         }
 
-        private static void Error(string s)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(s);
-            Console.ResetColor();
-            Console.WriteLine("Press any key to ignore and continue...");
-            Console.ReadKey();
-        }
-        private static void Error(string s, object[] os)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(s, os);
-            Console.ResetColor();
-            Console.WriteLine("Press any key to ignore and continue...");
-            Console.ReadKey();
-        }
-        private static void Error(string s, object o1) => Error(s, new object[] { o1 });
-        private static void Error(string s, object o1, object o2) => Error(s, new object[] { o1, o2 });
-        private static void Error(string s, object o1, object o2, object o3) => Error(s, new object[] { o1, o2, o3 });
-        private static void Error(string s, object o1, object o2, object o3, object o4) => Error(s, new object[] { o1, o2, o3, o4 });
+        
 
     }
 }

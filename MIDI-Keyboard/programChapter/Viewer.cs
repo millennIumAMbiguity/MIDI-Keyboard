@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text;
-using keyBordL.dataFolder;
+using MIDIKeyboard.dataFolder;
 
-namespace keyBordL
+namespace MIDIKeyboard
 {
     class Viewer
     {
 
-        private static InputPort midi = new InputPort();
+        private static readonly InputPort midi = new InputPort();
 
         public static bool Viewer_(bool runViewer)
         {
@@ -16,8 +16,7 @@ namespace keyBordL
             Console.WriteLine("what midi port do you whant to use");
             {
                 Console.ForegroundColor = ConsoleColor.Black;
-                for (int i = 0; i < midi.InputCount(); i++)
-                {
+                for (int i = 0; i < midi.InputCount(); i++) {
                     if (i % 2 == 0)
                         Console.BackgroundColor = ConsoleColor.Gray;
                     else
@@ -28,24 +27,18 @@ namespace keyBordL
                 Console.ResetColor();
             }
             Console.Write("port: ");
-            int resultat2;
-            int.TryParse(Console.ReadLine(), out resultat2);
+            int.TryParse(Console.ReadLine(), out int resultat2);
             Console.WriteLine("value set to " + resultat2);
             Console.WriteLine("press ESC to exit");
             int chanel = resultat2;
             midi.Open(chanel);
             midi.Start();
             int old = 0;
-            int value = 0;
-            string valueHex = "";
-            string hex4 = "0000";
             bool sw = false;
 
 
-            while (runViewer)
-            {
-                if (Console.KeyAvailable)
-                {
+            while (runViewer) {
+                if (Console.KeyAvailable) {
 
                     StringBuilder sb = new StringBuilder();
 
@@ -67,10 +60,8 @@ namespace keyBordL
                     byte bkey = (byte)key.KeyChar;
                     if (bkey > 96 && bkey < 123)
                         bkey -= 32;
-                    else
-                    {
-                        switch (key.Key)
-                        {
+                    else {
+                        switch (key.Key) {
                             case ConsoleKey.Backspace:
                                 bkey = 8;
                                 break;
@@ -411,20 +402,18 @@ namespace keyBordL
 
 
                 }
-                value = midi.p;
-                if (old != value)
-                {
+                int value = midi.p;
+                if (old != value) {
 
 
                     sw = false;
 
-                    valueHex = midi.pS;
+                    string valueHex = midi.pS;
 
-                    hex4 = valueHex.Substring(valueHex.Length - 4);
+                    string hex4 = valueHex.Substring(valueHex.Length - 4);
 
 
-                    if (hex4.Substring(hex4.Length - 2) == "D0")
-                    {
+                    if (hex4.Substring(hex4.Length - 2) == "D0") {
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.Write(valueHex.PadLeft(6, ' ').Substring(0, 4));
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -432,9 +421,7 @@ namespace keyBordL
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine(value);
                         Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else
-                    {
+                    } else {
                         /*
                         if (valueHex.Length > 4)
                         {

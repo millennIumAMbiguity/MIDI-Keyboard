@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace keyBordL
+namespace MIDIKeyboard
 {
     // Token: 0x02000002 RID: 2
     internal class Program
@@ -14,36 +14,30 @@ namespace keyBordL
         private static void Main(string[] args)
         {
             if (args.Length > 0 && args[0] == "run") {
-                Program.runPogram = true;
+                Program.runProgram = true;
             }
 
             Console.Title = "MIDI KEYS";
 
-            while (Program.runForm)
-            {
+            while (runForm) {
                 Console.Clear();
-                if (Program.runFastSetup)
-                {
+                if (runFastSetup) {
                     FastSetup.FastSetup_(runFastSetup);
                     runFastSetup = false;
                 }
-                if (Program.runPogram)
-                {
-                    Run.Run_(runPogram);
-                    runPogram = false;
+                if (runProgram) {
+                    Run.Run.Run_(runProgram);
+                    runProgram = false;
                 }
-                if (Program.runViewer)
-                {
+                if (runViewer) {
                     Viewer.Viewer_(runViewer);
                     runViewer = false;
                 }
-                if (Program.runOutViewer)
-                {
+                if (runOutViewer) {
                     OutViewer.OutViewer_(runOutViewer);
                     runOutViewerVisual = false;
                 }
-                if (Program.runOutViewerVisual)
-                {
+                if (runOutViewerVisual) {
                     OutViewerVisual.OutViewerVisual_(runOutViewerVisual);
                     runOutViewerVisual = false;
                 }
@@ -57,8 +51,7 @@ namespace keyBordL
                 Console.Write("2. setup\n3. visual setup");
                 Console.ResetColor();
                 Console.Write("\n4. run\n5. viewer\n6. viewer output\n7. viewer output visual\n8. quit\n");
-                switch (Console.ReadKey().Key)
-                {
+                switch (Console.ReadKey().Key) {
                     case ConsoleKey.D1:
                         Program.runFastSetup = true;
                         break;
@@ -69,7 +62,7 @@ namespace keyBordL
                         Program.runVisualSetup = true;
                         break;
                     case ConsoleKey.D4:
-                        Program.runPogram = true;
+                        Program.runProgram = true;
                         break;
                     case ConsoleKey.D5:
                         Program.runViewer = true;
@@ -91,8 +84,7 @@ namespace keyBordL
         public static int GetTeken()
         {
             Program.teken++;
-            switch (Program.teken)
-            {
+            switch (Program.teken) {
                 case 1:
                     return 9;
                 case 2:
@@ -270,7 +262,7 @@ namespace keyBordL
         private static bool runVisualSetup = false;
 #pragma warning restore IDE0052 // Remove unread private members
 
-        private static bool runPogram = false;
+        private static bool runProgram = false;
 
         private static bool runViewer = false;
         private static bool runOutViewer = false;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using keyBordL.dataFolder;
+using MIDIKeyboard.dataFolder;
 
-namespace keyBordL
+namespace MIDIKeyboard
 {
     class OutViewerVisual
     {

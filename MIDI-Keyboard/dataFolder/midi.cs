@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace keyBordL.dataFolder
+namespace MIDIKeyboard.dataFolder
 {
     public class InputPort
     {
