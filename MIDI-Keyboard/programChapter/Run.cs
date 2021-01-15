@@ -23,78 +23,77 @@ namespace keyBordL
 
             //load data
             if (Program.values.Count < 1) {
-                Console.WriteLine("loading from file...");
-                array = File.ReadAllLines("data.txt");
-                chanel = int.Parse(array[0].Split(',')[0]);
+                if (File.Exists("data.txt") && (array = File.ReadAllLines("data.txt")).Length > 2) {
+                    Console.WriteLine("loading from file...");
+                    chanel = int.Parse(array[0].Split(',')[0]);
 
-                //color
-                if (array[0].Split(',').Length > 1) {
-                    string[] ColorArray = array[0].Split(',');
+                    //color
+                    if (array[0].Split(',').Length > 1) {
+                        string[] ColorArray = array[0].Split(',');
 
-                    InputPort midiOut = new InputPort();
-                    midiOut.OpenOut(int.Parse(ColorArray[1].Trim()));
+                        InputPort midiOut = new InputPort();
+                        midiOut.OpenOut(int.Parse(ColorArray[1].Trim()));
 
-                    //send output
-                    for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
-                        midiOut.MidiOutMsg((byte)int.Parse(ColorArray[i].Trim()), (byte)int.Parse(ColorArray[i + 1].Trim()));
+                        //send output
+                        for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
+                            midiOut.MidiOutMsg((byte)int.Parse(ColorArray[i].Trim()), (byte)int.Parse(ColorArray[i + 1].Trim()));
+                        }
+
+                        midiOut.CloseOut();
                     }
 
-                    midiOut.CloseOut();
-                }
-
-                //load keys
-                for (int lineID = 0; lineID < array.Length; lineID++) {
-                    if (array[lineID] != string.Concat(chanel)) {
-                        string[] loadedValues = array[lineID].Split(new char[] { ',' });
-                        int[] tempValues = new int[loadedValues.Length];
-                        StringBuilder log = new StringBuilder();
-                        for (int i = 0; i < tempValues.Length; i++) {
-                            string value = loadedValues[i].Trim();
-                            if (!int.TryParse(value, out tempValues[i])) {
-                                string[] convertValue;
-                                if ((convertValue = value.Split('\'')).Length > 1) {
-                                    tempValues[i] = GetID(convertValue[1][0]);
-                                    if (convertValue[0][convertValue[0].Length - 1] == '-') {
-                                        if (i < 2 || i > 1 && tempValues[1] != 1) {
-                                            error = true;
-                                            Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
-                                        } else
-                                            tempValues[i] = -tempValues[i];
-                                    }
-                                } else if ((convertValue = value.Split('"')).Length > 1) {
-                                    tempValues[i] = GetID(convertValue[1][0]);
-                                    if (convertValue[0][convertValue[0].Length - 1] == '-') {
-                                        if (i < 2 || i > 1 && tempValues[1] != 1) {
-                                            error = true;
-                                            Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
-                                        } else
-                                            tempValues[i] = -tempValues[i];
-                                    }
-                                } else if (value.Length == 1) {
-                                    tempValues[i] = GetID(value[0]);
-                                } else {
-                                    if (value.Length == 2 && value[0] == '-') {
-                                        tempValues[i] = -GetID(value[1]);
+                    //load keys
+                    for (int lineID = 0; lineID < array.Length; lineID++) {
+                        if (array[lineID] != string.Concat(chanel)) {
+                            string[] loadedValues = array[lineID].Split(new char[] { ',' });
+                            int[] tempValues = new int[loadedValues.Length];
+                            StringBuilder log = new StringBuilder();
+                            for (int i = 0; i < tempValues.Length; i++) {
+                                string value = loadedValues[i].Trim();
+                                if (!int.TryParse(value, out tempValues[i])) {
+                                    string[] convertValue;
+                                    if ((convertValue = value.Split('\'')).Length > 1) {
+                                        tempValues[i] = GetID(convertValue[1][0]);
+                                        if (convertValue[0][convertValue[0].Length - 1] == '-') {
+                                            if (i < 2 || i > 1 && tempValues[1] != 1) {
+                                                error = true;
+                                                Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
+                                            } else
+                                                tempValues[i] = -tempValues[i];
+                                        }
+                                    } else if ((convertValue = value.Split('"')).Length > 1) {
+                                        tempValues[i] = GetID(convertValue[1][0]);
+                                        if (convertValue[0][convertValue[0].Length - 1] == '-') {
+                                            if (i < 2 || i > 1 && tempValues[1] != 1) {
+                                                error = true;
+                                                Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
+                                            } else
+                                                tempValues[i] = -tempValues[i];
+                                        }
+                                    } else if (value.Length == 1) {
+                                        tempValues[i] = GetID(value[0]);
                                     } else {
-                                        error = true;
-                                        Error("Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
+                                        if (value.Length == 2 && value[0] == '-') {
+                                            tempValues[i] = -GetID(value[1]);
+                                        } else {
+                                            error = true;
+                                            Error("Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
+                                        }
                                     }
                                 }
+                                log.Append(value);
+                                log.Append(' ');
                             }
-                            log.Append(value);
-                            log.Append(' ');
+                            Program.values.Add(tempValues);
+                            Console.WriteLine(log);
                         }
-                        Program.values.Add(tempValues);
-                        Console.WriteLine(log);
                     }
+                } else {
+                    error = true;
+                    Error("Error -> No data.");
                 }
             } else {
-                error = true;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error -> No data.");
-                Console.ResetColor();
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+                Console.WriteLine("Data already loaded in memory...");
             }
 
             string[] valuesHex = new string[Program.values.Count];
@@ -187,8 +186,6 @@ namespace keyBordL
                     }
                     Console.WriteLine(valueHex + "\n");
                     old2 = value;
-
-
                 }
                 Program.waitHandle.Reset();
             }
@@ -249,21 +246,10 @@ namespace keyBordL
             Console.WriteLine("Press any key to ignore and continue...");
             Console.ReadKey();
         }
-        private static void Error(string s, object o1)
-        {
-            Error(s, new object[] { o1 });
-        }
-        private static void Error(string s, object o1, object o2)
-        {
-            Error(s, new object[] { o1, o2 });
-        }
-        private static void Error(string s, object o1, object o2, object o3)
-        {
-            Error(s, new object[] { o1, o2, o3 });
-        }
-        private static void Error(string s, object o1, object o2, object o3, object o4)
-        {
-            Error(s, new object[] { o1, o2, o3, o4 });
-        }
+        private static void Error(string s, object o1) => Error(s, new object[] { o1 });
+        private static void Error(string s, object o1, object o2) => Error(s, new object[] { o1, o2 });
+        private static void Error(string s, object o1, object o2, object o3) => Error(s, new object[] { o1, o2, o3 });
+        private static void Error(string s, object o1, object o2, object o3, object o4) => Error(s, new object[] { o1, o2, o3, o4 });
+
     }
 }
