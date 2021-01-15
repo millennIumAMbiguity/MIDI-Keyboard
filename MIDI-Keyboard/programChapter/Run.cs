@@ -55,12 +55,20 @@ namespace keyBordL
                                 if ((convertValue = value.Split('\'')).Length > 1) {
                                     tempValues[i] = GetID(convertValue[1][0]);
                                     if (convertValue[0][convertValue[0].Length - 1] == '-') {
-                                        tempValues[i] = -tempValues[i];
+                                        if (i < 2 || i > 1 && tempValues[1] != 1) {
+                                            error = true;
+                                            Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
+                                        } else
+                                            tempValues[i] = -tempValues[i];
                                     }
                                 } else if ((convertValue = value.Split('"')).Length > 1) {
                                     tempValues[i] = GetID(convertValue[1][0]);
                                     if (convertValue[0][convertValue[0].Length - 1] == '-') {
-                                        tempValues[i] = -tempValues[i];
+                                        if (i < 2 || i > 1 && tempValues[1] != 1) {
+                                            error = true;
+                                            Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
+                                        } else
+                                            tempValues[i] = -tempValues[i];
                                     }
                                 } else if (value.Length == 1) {
                                     tempValues[i] = GetID(value[0]);
@@ -69,11 +77,7 @@ namespace keyBordL
                                         tempValues[i] = -GetID(value[1]);
                                     } else {
                                         error = true;
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
-                                        Console.ResetColor();
-                                        Console.WriteLine("Press any key to ignore and continue...");
-                                        Console.ReadKey();
+                                        Error("Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
                                     }
                                 }
                             }
@@ -229,5 +233,37 @@ namespace keyBordL
             return (" + " + addonButtonKey.ToString());
         }
 
+        private static void Error(string s)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(s);
+            Console.ResetColor();
+            Console.WriteLine("Press any key to ignore and continue...");
+            Console.ReadKey();
+        }
+        private static void Error(string s, object[] os)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(s, os);
+            Console.ResetColor();
+            Console.WriteLine("Press any key to ignore and continue...");
+            Console.ReadKey();
+        }
+        private static void Error(string s, object o1)
+        {
+            Error(s, new object[] { o1 });
+        }
+        private static void Error(string s, object o1, object o2)
+        {
+            Error(s, new object[] { o1, o2 });
+        }
+        private static void Error(string s, object o1, object o2, object o3)
+        {
+            Error(s, new object[] { o1, o2, o3 });
+        }
+        private static void Error(string s, object o1, object o2, object o3, object o4)
+        {
+            Error(s, new object[] { o1, o2, o3, o4 });
+        }
     }
 }
