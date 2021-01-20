@@ -26,8 +26,7 @@ namespace MIDIKeyboard
                     runFastSetup = false;
                 }
                 if (runProgram) {
-                    Run.Run.Run_(runProgram);
-                    runProgram = false;
+                    Run.Run.Run_(ref runProgram);
                 }
                 if (runViewer) {
                     Viewer.Viewer_(runViewer);

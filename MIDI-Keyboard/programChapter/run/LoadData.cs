@@ -46,6 +46,26 @@ namespace MIDIKeyboard.Run
             return true;
         }
 
+        public static bool SendOutputDataZero()
+        {
+            if (array[0].Split(',').Length > 1) {
+                Console.Write("Sending output data zero to set values...");
+                string[] ColorArray = array[0].Split(',');
+
+                InputPort midiOut = new InputPort();
+                midiOut.OpenOut(int.Parse(ColorArray[1]));
+
+                for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
+                    int x = int.Parse(ColorArray[i]);
+                    midiOut.MidiOutMsg((byte)x, 0);
+                }
+
+                midiOut.CloseOut();
+                Console.WriteLine(" Done.");
+            }
+            return true;
+        }
+
         static bool LoadKeyData()
         {
             bool noErrors = true;
@@ -57,16 +77,20 @@ namespace MIDIKeyboard.Run
                     string[] loadedValues = array[lineID].Split(new char[] { ',' });
                     int[] tempValues = new int[loadedValues.Length];
                     StringBuilder log = new StringBuilder();
+                    bool isConverted = false;
+                    bool error = false;
                     for (int i = 0; i < tempValues.Length; i++) {
                         string value = loadedValues[i].Trim();
-                        if (!int.TryParse(value, out tempValues[i])) {
+                        if (isConverted |= !int.TryParse(value, out tempValues[i])) {
                             string[] convertValue;
                             if ((convertValue = value.Split('\'')).Length > 1) {
                                 tempValues[i] = GetID(convertValue[1][0]);
                                 if (convertValue[0][convertValue[0].Length - 1] == '-') {
                                     if (i < 2 || i > 1 && tempValues[1] != 1) {
                                         noErrors = false;
+                                        error = true;
                                         Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
+                                        break;
                                     } else
                                         tempValues[i] = -tempValues[i];
                                 }
@@ -75,7 +99,9 @@ namespace MIDIKeyboard.Run
                                 if (convertValue[0][convertValue[0].Length - 1] == '-') {
                                     if (i < 2 || i > 1 && tempValues[1] != 1) {
                                         noErrors = false;
+                                        error = true;
                                         Error("Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID, array[lineID], value);
+                                        break;
                                     } else
                                         tempValues[i] = -tempValues[i];
                                 }
@@ -86,14 +112,24 @@ namespace MIDIKeyboard.Run
                                     tempValues[i] = -GetID(value[1]);
                                 } else {
                                     noErrors = false;
+                                    error = true;
                                     Error("Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID, array[lineID], value.Length > 1 ? "s" : "", value);
+                                    break;
                                 }
                             }
                         }
                         log.Append(value);
                         log.Append(' ');
                     }
+                    if (!error)
                     Program.values.Add(tempValues);
+                    if (isConverted) {
+                        log.Append("-> ");
+                        foreach (int item in tempValues) {
+                            log.Append(item);
+                            log.Append(' ');
+                        }
+                    }
                     Console.WriteLine(log);
                 }
             }
