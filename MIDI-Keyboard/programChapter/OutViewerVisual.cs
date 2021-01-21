@@ -36,17 +36,17 @@ namespace MIDIKeyboard
             midi.OpenOut(chanel);
 
 
-            string path = @"visualProfiles\";
 
             int[][] linesInt;
             {
 
+                string profilePath = Miscellaneous.Settings.data.visual_profiles_path;
 
-                bool exists = System.IO.Directory.Exists(path);
+                bool exists = System.IO.Directory.Exists(profilePath);
                 if (!exists)
-                    System.IO.Directory.CreateDirectory(path);
+                    System.IO.Directory.CreateDirectory(profilePath);
 
-                string[] files = Directory.GetFiles(path);
+                string[] files = Directory.GetFiles(profilePath);
 
                 Console.ForegroundColor = ConsoleColor.Black;
                 for (int i = 0; i < files.Length; i++) {
@@ -59,10 +59,10 @@ namespace MIDIKeyboard
                 }
                 Console.ResetColor();
                 int.TryParse(Console.ReadLine(), out int datat);
-                path = files[datat];
+                profilePath = files[datat];
 
 
-                string[] lines = File.ReadAllLines(path, Encoding.UTF8);
+                string[] lines = File.ReadAllLines(profilePath, Encoding.UTF8);
                 linesInt = new int[lines.Length][];
                 for (int i = 0; i < lines.Length; i++) {
                     string[] linesS = lines[i].Split(',');
@@ -145,29 +145,30 @@ namespace MIDIKeyboard
 
             }
 
-            if (File.Exists("data.txt")) {
+            string path = Miscellaneous.Settings.data.key_data_path;
+            if (File.Exists(path)) {
                 string[] allLines;
                 Console.WriteLine();
-                Console.Write("save to data.txt? \n1. overwrite old color profile.\n2. add to the existing color profile.\n3. dont save.\n ");
+                Console.Write("save to {0}? \n1. overwrite old color profile.\n2. add to the existing color profile.\n3. dont save.\n ", path);
                 switch (Console.ReadKey().Key) {
                     case ConsoleKey.D1:
-                        allLines = File.ReadAllLines("data.txt");
+                        allLines = File.ReadAllLines(path);
                         allLines[0] = allLines[0].Split(',')[0] + "," + resultat2;
 
                         for (int i = 0; i < usedShit.Count; i++) {
                             allLines[0] += "," + usedShit[i][0] + "," + usedShit[i][1];
                         }
 
-                        File.WriteAllLines("data.txt", allLines);
+                        File.WriteAllLines(path, allLines);
                         break;
                     case ConsoleKey.D2:
-                        allLines = File.ReadAllLines("data.txt");
+                        allLines = File.ReadAllLines(path);
 
                         for (int i = 0; i < usedShit.Count; i++) {
                             allLines[0] += "," + usedShit[i][0] + "," + usedShit[i][1];
                         }
 
-                        File.WriteAllLines("data.txt", allLines);
+                        File.WriteAllLines(path, allLines);
                         break;
                     default:
                         break;

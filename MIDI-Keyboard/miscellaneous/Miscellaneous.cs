@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MIDIKeyboard.miscellaneous
+namespace MIDIKeyboard.Miscellaneous
 {
     static class Miscellaneous
     {

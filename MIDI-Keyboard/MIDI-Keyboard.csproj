@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="dataFolder\midi.cs" />
     <Compile Include="miscellaneous\Miscellaneous.cs" />
+    <Compile Include="miscellaneous\Settings.cs" />
     <Compile Include="programChapter\OutViewer.cs" />
     <Compile Include="programChapter\OutViewerVisual.cs" />
     <Compile Include="programChapter\FastSetup.cs" />

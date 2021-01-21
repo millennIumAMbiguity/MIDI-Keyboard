@@ -9,9 +9,8 @@ namespace MIDIKeyboard
 
         private static readonly InputPort midi = new InputPort();
 
-        public static bool Viewer_(bool runViewer)
+        public static void Viewer_(ref bool runViewer)
         {
-
 
             Console.WriteLine("what midi port do you whant to use");
             {
@@ -44,8 +43,10 @@ namespace MIDIKeyboard
 
                     ConsoleKeyInfo key = Console.ReadKey();
 
-                    if (key.Key == ConsoleKey.Escape)
+                    if (key.Key == ConsoleKey.Escape) {
                         runViewer = false;
+                        break;
+                    }
 
                     Console.Write("\b  ");
 
@@ -391,15 +392,12 @@ namespace MIDIKeyboard
                         }
                     }
 
-
                     sb.Append(key.Key);
                     sb.Append(" ");
                     sb.Append(bkey);
                     Console.WriteLine(sb);
 
                     Console.ResetColor();
-
-
 
                 }
                 int value = midi.p;
@@ -441,12 +439,6 @@ namespace MIDIKeyboard
 
             midi.Stop();
             midi.Close();
-
-
-
-
-
-            return false;
 
         }
 

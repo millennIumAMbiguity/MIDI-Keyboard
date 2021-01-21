@@ -8,26 +8,25 @@ namespace MIDIKeyboard.Run
 
         private static readonly InputPort midi = new InputPort();
 
-        public static bool Run_(ref bool runPogram)
+        public static void Run_(ref bool runPogram)
         {
 
             int chanel = 0;
             bool error = false;
 
             //load data
-            if (Program.values.Count < 1) {
-                error = LoadData.Load();
-            } else {
+            if (Program.values.Count < 1 || Miscellaneous.Settings.data.force_load_data_on_run) 
+                error = LoadData.Load(Miscellaneous.Settings.data.key_data_path);
+            else 
                 Console.WriteLine("Data already loaded in memory...");
-            }
+            
 
             string[] valuesHex = new string[Program.values.Count];
 
-            for (int i = 0; i < Program.values.Count; i++) {
+            for (int i = 0; i < Program.values.Count; i++) 
                 valuesHex[i] = Program.values[i][0].ToString("X").PadLeft(4, '0');
-            }
 
-            int oldValue = 0;
+
             midi.Open(chanel);
             midi.Start();
             if (!error)
@@ -37,13 +36,28 @@ namespace MIDIKeyboard.Run
             Console.WriteLine("\nRuning...");
             Console.ResetColor();
             Console.WriteLine("Press escape to exit.\n");
+
+            //run application loop
+            AppLoop(ref runPogram, valuesHex); 
+
+            //stop and clsoe MIDI port.
+            midi.Stop();
+            midi.Close();
+            Program.teken = 0;
+
+            //remove color
+            LoadData.SendOutputDataZero();
+        }
+        static void AppLoop(ref bool runPogram, string[] valuesHex)
+        {
+            int oldValue = 0;
             while (runPogram) {
-                
+
                 if (Console.KeyAvailable && Console.ReadKey().Key == ConsoleKey.Escape) {
                     runPogram = false;
-                    break;
+                    return;
                 }
-                
+
                 if (Program.waitHandle.WaitOne(1000)) {
                     int value = midi.p;
                     if (oldValue != value) {
@@ -77,14 +91,6 @@ namespace MIDIKeyboard.Run
 
                 Program.waitHandle.Reset();
             }
-            midi.Stop();
-            midi.Close();
-            Program.teken = 0;
-
-            //remove color
-            LoadData.SendOutputDataZero();
-
-            return false;
         }
 
     }

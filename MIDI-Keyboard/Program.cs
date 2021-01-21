@@ -13,24 +13,26 @@ namespace MIDIKeyboard
         // Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
         private static void Main(string[] args)
         {
+
+            if (!Miscellaneous.Settings.Read())
+                Miscellaneous.Settings.Save();
+
             if (args.Length > 0 && args[0] == "run") {
                 Program.runProgram = true;
             }
 
-            Console.Title = "MIDI KEYS";
+            Console.Title = "MIDI Keyboard";
 
             while (runForm) {
                 Console.Clear();
                 if (runFastSetup) {
-                    FastSetup.FastSetup_(runFastSetup);
-                    runFastSetup = false;
+                    FastSetup.FastSetup_(ref runFastSetup);
                 }
                 if (runProgram) {
                     Run.Run.Run_(ref runProgram);
                 }
                 if (runViewer) {
-                    Viewer.Viewer_(runViewer);
-                    runViewer = false;
+                    Viewer.Viewer_(ref runViewer);
                 }
                 if (runOutViewer) {
                     OutViewer.OutViewer_(runOutViewer);

@@ -2,13 +2,14 @@
 using System.IO;
 using System.Text;
 using MIDIKeyboard.dataFolder;
-using static MIDIKeyboard.miscellaneous.Miscellaneous;
+using static MIDIKeyboard.Miscellaneous.Miscellaneous;
 
 namespace MIDIKeyboard.Run
 {
     class LoadData
     {
         public static bool Load() => LoadFile() && SendOutputData() & LoadKeyData();
+        public static bool Load(string path) => LoadFile(path) && SendOutputData() & LoadKeyData();
 
         static string[] array;
 
