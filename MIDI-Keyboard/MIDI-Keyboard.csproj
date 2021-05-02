@@ -55,6 +55,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="programChapter\run\KeyMode.cs" />
     <Compile Include="programChapter\run\LoadData.cs" />
+    <Compile Include="programChapter\Setup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="programChapter\run\Run.cs" />
     <Compile Include="programChapter\Viewer.cs" />

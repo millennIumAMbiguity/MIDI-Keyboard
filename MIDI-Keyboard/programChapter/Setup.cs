@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,11 +8,11 @@ using MIDIKeyboard.Miscellaneous;
 
 namespace MIDIKeyboard
 {
-	internal class FastSetup
+	internal class Setup
 	{
 		private static readonly InputPort midi = new InputPort();
 
-		public static void FastSetup_(ref bool runFastSetup)
+		public static void Setup_(ref bool runSetup)
 		{
 			if (File.Exists(Settings.data.key_data_path)) {
 				Console.ForegroundColor = ConsoleColor.Red;
@@ -38,20 +39,49 @@ namespace MIDIKeyboard
 			int.TryParse(Console.ReadLine(), out int resultat);
 			Console.WriteLine("value set to " + resultat);
 			int chanel = resultat;
+			/*
 			Console.Write(
 				"\nkeymode: \n  0. default \n  1. macro mode \n  2. 'F24' addon key (useful for autohotkey) \nmode: ");
 			int.TryParse(Console.ReadLine(), out int keyMode);
 			Console.WriteLine("value set to " + keyMode);
+			*/
+			int keyMode = 0;
 			Console.WriteLine(
-				"\npress the midi keys you want to use, and when you're done press any key on your keyboard\n");
+				"\npress a midi key and then press a keyboard key.\n");
 			midi.Open(chanel);
 			midi.Start();
-			int    old  = 0;
-			string hex4 = "0000";
-			while (runFastSetup) {
+			int    old     = 0;
+			string hex4    = "0000";
+			int    hex4Con = 0;
+			while (runSetup) {
 				if (Console.KeyAvailable) {
-					runFastSetup = false;
-					break;
+					var newKey = Console.ReadKey();
+					if (newKey.Key == ConsoleKey.Escape) {
+						runSetup = false;
+						break;
+					}
+
+					Console.CursorLeft      = 0;
+					Console.BackgroundColor = ConsoleColor.White;
+					Console.ForegroundColor = ConsoleColor.Black;
+					Console.Write(newKey.Key.ToString());
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.DarkGray;
+					if (Console.CursorLeft < 3)
+						Console.CursorLeft = 3;
+					Console.Write(" => ");
+					if (Program.values.All(t => t[0] != hex4Con)) {
+						Program.values.Add(
+							new[] {
+								hex4Con,
+								keyMode,
+								Miscellaneous.Miscellaneous.GetId(newKey.KeyChar)
+							});
+						Console.ForegroundColor = ConsoleColor.White;
+						Console.Write($"assigned to {hex4Con}.\n");
+					} else {
+						Console.Write($"{hex4Con} is already assigned to a key.\n");
+					}
 				}
 
 				int value = midi.p;
@@ -60,15 +90,8 @@ namespace MIDIKeyboard
 				string newHex4  = valueHex.Substring(valueHex.Length - 4);
 				if (hex4 != newHex4)
 					if (newHex4.Substring(newHex4.Length - 2) != "D0") {
-						hex4 = newHex4;
-						int hex4Con = int.Parse(hex4, NumberStyles.HexNumber);
-						if (Program.values.All(t => t[0] != hex4Con))
-							Program.values.Add(
-								new[] {
-									hex4Con,
-									keyMode,
-									Program.GetTeken()
-								});
+						hex4    = newHex4;
+						hex4Con = int.Parse(hex4, NumberStyles.HexNumber);
 					}
 
 				if (valueHex.Substring(valueHex.Length - 2) == "D0") {
