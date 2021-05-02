@@ -8,14 +8,14 @@ namespace MIDIKeyboard.Run
 {
 	internal class LoadData
 	{
-		private static string[] array;
-		public static  bool     Load()            => LoadFile()     && SendOutputData() & LoadKeyData();
-		public static  bool     Load(string path) => LoadFile(path) && SendOutputData() & LoadKeyData();
+		public static string[] rawData;
+		public static bool     Load()            => LoadFile()     && SendOutputData() & LoadKeyData();
+		public static bool     Load(string path) => LoadFile(path) && SendOutputData() & LoadKeyData();
 
 		private static bool LoadFile(string path = "data.txt")
 		{
 			Console.Write("Loading data from path \"{0}\"...", path);
-			if (File.Exists(path) && (array = File.ReadAllLines(path)).Length > 2) {
+			if (File.Exists(path) && (rawData = File.ReadAllLines(path)).Length > 2) {
 				Console.WriteLine(" Done.");
 				return true;
 			}
@@ -27,9 +27,9 @@ namespace MIDIKeyboard.Run
 
 		private static bool SendOutputData()
 		{
-			if (array[0].Split(',').Length > 1) {
+			if (rawData[0].Split(',').Length > 1) {
 				Console.Write("Sending output data...");
-				string[] ColorArray = array[0].Split(',');
+				string[] ColorArray = rawData[0].Split(',');
 
 				var midiOut = new InputPort();
 				midiOut.OpenOut(int.Parse(ColorArray[1].Trim()));
@@ -50,9 +50,9 @@ namespace MIDIKeyboard.Run
 
 		public static bool SendOutputDataZero()
 		{
-			if (array[0].Split(',').Length > 1) {
+			if (rawData[0].Split(',').Length > 1) {
 				Console.Write("Sending output data zero to set values...");
-				string[] ColorArray = array[0].Split(',');
+				string[] ColorArray = rawData[0].Split(',');
 
 				var midiOut = new InputPort();
 				midiOut.OpenOut(int.Parse(ColorArray[1]));
@@ -73,11 +73,11 @@ namespace MIDIKeyboard.Run
 		{
 			bool noErrors = true;
 			Console.WriteLine("loading from file...");
-			int chanel = int.Parse(array[0].Split(',')[0]);
+			int chanel = int.Parse(rawData[0].Split(',')[0]);
 
-			for (int lineID = 0; lineID < array.Length; lineID++)
-				if (array[lineID] != string.Concat(chanel)) {
-					string[] loadedValues = array[lineID].Split(',');
+			for (int lineID = 1; lineID < rawData.Length; lineID++)
+				if (rawData[lineID] != string.Concat(chanel)) {
+					string[] loadedValues = rawData[lineID].Split(',');
 					int[]    tempValues   = new int[loadedValues.Length];
 					var      log          = new StringBuilder();
 					bool     isConverted  = false;
@@ -94,7 +94,7 @@ namespace MIDIKeyboard.Run
 										error    = true;
 										Error(
 											"Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID,
-											array[lineID],                                                       value);
+											rawData[lineID],                                                     value);
 										break;
 									}
 
@@ -108,7 +108,7 @@ namespace MIDIKeyboard.Run
 										error    = true;
 										Error(
 											"Error at line {0} -> \"{1}\", Negativ value not allowed: \"{2}\".", lineID,
-											array[lineID],                                                       value);
+											rawData[lineID],                                                     value);
 										break;
 									}
 
@@ -124,7 +124,7 @@ namespace MIDIKeyboard.Run
 									error    = true;
 									Error(
 										"Error at line {0} -> \"{1}\", Unexpected character{2}: \"{3}\".", lineID,
-										array[lineID], value.Length > 1 ? "s" : "", value);
+										rawData[lineID], value.Length > 1 ? "s" : "", value);
 									break;
 								}
 							}

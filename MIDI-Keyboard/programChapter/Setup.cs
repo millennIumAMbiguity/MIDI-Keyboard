@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using MIDIKeyboard.dataFolder;
 using MIDIKeyboard.Miscellaneous;
+using MIDIKeyboard.Run;
 
 namespace MIDIKeyboard
 {
@@ -14,10 +14,19 @@ namespace MIDIKeyboard
 
 		public static void Setup_(ref bool runSetup)
 		{
-			if (File.Exists(Settings.data.key_data_path)) {
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine(
-					"Warning: you will now overwrite the data.txt file! any old setups will be deleted.\n");
+			bool dataExist = Program.values.Count > 0;
+			bool exist     = File.Exists(Settings.data.key_data_path);
+			if (exist) {
+				if (dataExist) {
+					Console.ForegroundColor = ConsoleColor.Yellow;
+					Console.WriteLine(
+						"Warning: you will now modify the data.txt file! any old setups will be modified.\n");
+				} else {
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(
+						"Warning: you will now overwrite the data.txt file! any old setups will be deleted.\n");
+				}
+
 				Console.ResetColor();
 			}
 
@@ -55,7 +64,7 @@ namespace MIDIKeyboard
 			int    hex4Con = 0;
 			while (runSetup) {
 				if (Console.KeyAvailable) {
-					var newKey = Console.ReadKey();
+					ConsoleKeyInfo newKey = Console.ReadKey();
 					if (newKey.Key == ConsoleKey.Escape) {
 						runSetup = false;
 						break;
@@ -79,9 +88,8 @@ namespace MIDIKeyboard
 							});
 						Console.ForegroundColor = ConsoleColor.White;
 						Console.Write($"assigned to {hex4Con}.\n");
-					} else {
+					} else
 						Console.Write($"{hex4Con} is already assigned to a key.\n");
-					}
 				}
 
 				int value = midi.p;
@@ -117,7 +125,9 @@ namespace MIDIKeyboard
 			midi.Stop();
 			midi.Close();
 			using (var file = new StreamWriter(Settings.data.key_data_path)) {
-				file.WriteLine(chanel);
+				if (!dataExist)
+					file.WriteLine(chanel);
+				else file.WriteLine(LoadData.rawData[0]);
 				foreach (int[] line in Program.values)
 					file.WriteLine(string.Concat(line[0], ",", line[1], ",", line[2]));
 			}

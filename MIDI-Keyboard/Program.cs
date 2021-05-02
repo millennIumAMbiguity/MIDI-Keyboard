@@ -9,7 +9,7 @@ namespace MIDIKeyboard
 	internal class Program
 	{
 		public static readonly EventWaitHandle waitHandle = new AutoResetEvent(false);
-		
+
 		private static bool runForm = true;
 		private static bool runFastSetup;
 		private static bool runProgram;
@@ -25,12 +25,12 @@ namespace MIDIKeyboard
 		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		private static void Main(string[] args)
 		{
+			Console.Title = "MIDI Keyboard";
+
 			if (!Settings.Read())
 				Settings.Save();
 
 			if (args.Length > 0 && args[0] == "run") runProgram = true;
-
-			Console.Title = "MIDI Keyboard";
 
 			while (runForm) {
 				Console.Clear();
