@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace MIDIKeyboard.dataFolder
 {
-	public class InputPort
+	public class InputPort : IDisposable
 	{
 		private readonly NativeMethods.MidiInProc  midiInProc;
 		private readonly NativeMethods.MidiOutProc midiOutProc;
@@ -11,6 +11,8 @@ namespace MIDIKeyboard.dataFolder
 
 		public int    p;
 		public string pS = "";
+
+		private bool _isOpenOut, _isOpenIn, _isStarted;
 
 		public InputPort()
 		{
@@ -27,28 +29,38 @@ namespace MIDIKeyboard.dataFolder
 
 		public bool Close()
 		{
+			_isOpenIn = false;
 			bool result = NativeMethods.midiInClose(handle)
 			           == NativeMethods.MMSYSERR_NOERROR;
 			handle = IntPtr.Zero;
 			return result;
 		}
 
-		public bool Open(int id) =>
-			NativeMethods.midiInOpen(
-				out handle,
-				id,
-				midiInProc,
-				IntPtr.Zero,
-				NativeMethods.CALLBACK_FUNCTION)
-		 == NativeMethods.MMSYSERR_NOERROR;
+		public bool Open(int id)
+		{
+			_isOpenIn = true;
+			return NativeMethods.midiInOpen(
+				       out handle,
+				       id,
+				       midiInProc,
+				       IntPtr.Zero,
+				       NativeMethods.CALLBACK_FUNCTION)
+			    == NativeMethods.MMSYSERR_NOERROR;
+		}
 
-		public bool Start() =>
-			NativeMethods.midiInStart(handle)
-		 == NativeMethods.MMSYSERR_NOERROR;
+		public bool Start()
+		{
+			_isStarted = true;
+			return NativeMethods.midiInStart(handle)
+			    == NativeMethods.MMSYSERR_NOERROR;
+		}
 
-		public bool Stop() =>
-			NativeMethods.midiInStop(handle)
-		 == NativeMethods.MMSYSERR_NOERROR;
+		public bool Stop()
+		{
+			_isStarted = false;
+			return NativeMethods.midiInStop(handle)
+			    == NativeMethods.MMSYSERR_NOERROR;
+		}
 
 		private void MidiProc(
 			IntPtr hMidiIn,
@@ -84,24 +96,42 @@ namespace MIDIKeyboard.dataFolder
 
 		public bool CloseOut()
 		{
+			_isOpenOut = false;
 			bool result = NativeMethods.midiOutClose(handleOut)
 			           == NativeMethods.MMSYSERR_NOERROR;
 			handleOut = IntPtr.Zero;
 			return result;
 		}
 
-		public bool OpenOut(int id) =>
-			NativeMethods.midiOutOpen(
-				out handleOut,
-				id,
-				midiOutProc,
-				IntPtr.Zero,
-				NativeMethods.CALLBACK_FUNCTION)
-		 == NativeMethods.MMSYSERR_NOERROR;
+		public bool OpenOut(int id)
+		{
+			_isOpenOut = true;
+			return NativeMethods.midiOutOpen(
+				       out handleOut,
+				       id,
+				       midiOutProc,
+				       IntPtr.Zero,
+				       NativeMethods.CALLBACK_FUNCTION)
+			    == NativeMethods.MMSYSERR_NOERROR;
+		}
 
 		public bool MidiOutReset() =>
 			NativeMethods.MidiOutReset(handleOut)
 		 == NativeMethods.MMSYSERR_NOERROR;
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposing) return;
+			if (_isStarted) Stop();
+			if (_isOpenIn)  Close();
+			if (_isOpenOut) CloseOut();
+		}
 	}
 
 	#pragma warning disable IDE1006 // Naming Styles

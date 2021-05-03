@@ -64,21 +64,20 @@ namespace MIDIKeyboard.Run
 						string valueHex4 = valueHex.Substring(valueHex.Length - 4);
 
 						if (valueHex.Substring(valueHex.Length - 2) != "D0") {
-							int lenght_ = Program.values.Count;
-							for (int line = 0; line < lenght_; line++)
-								if (valuesHex[line] == valueHex4) {
-									if (Program.values[line][1] == 0) { // key
-										KeyMode.Key(line, valueHex);
+							int lenght = Program.values.Count;
+							for (int lineIndex = 0; lineIndex < lenght; lineIndex++)
+								if (valuesHex[lineIndex] == valueHex4) {
+
+									if (Program.values[lineIndex][1] == 0) { // key
+										KeyMode.Key(lineIndex, valueHex);
 										break;
 									}
-
-									if (Program.values[line][1] == 2) { // addonkey
-										KeyMode.Addonkey(line, valueHex);
+									if (Program.values[lineIndex][1] == 2) { // addonkey
+										KeyMode.Addonkey(lineIndex, valueHex);
 										break;
 									}
-
-									if (Program.values[line][1] == 1) { // macro
-										KeyMode.Macro(line, valueHex);
+									if (Program.values[lineIndex][1] == 1) { // macro
+										KeyMode.Macro(lineIndex, valueHex);
 										break;
 									}
 								}

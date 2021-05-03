@@ -9,8 +9,9 @@ namespace MIDIKeyboard.Run
 	internal class LoadData
 	{
 		public static string[] rawData;
-		public static bool     Load()            => LoadFile()     && SendOutputData() & LoadKeyData();
-		public static bool     Load(string path) => LoadFile(path) && SendOutputData() & LoadKeyData();
+		public static bool     Load()                         => LoadFile()     && SendOutputData() & LoadKeyData();
+		public static bool     Load(string              path) => LoadFile(path) && SendOutputData() & LoadKeyData();
+		public static bool     LoadWithoutOutput(string path) => LoadFile(path) && LoadKeyData();
 
 		private static bool LoadFile(string path = "data.txt")
 		{
@@ -50,21 +51,20 @@ namespace MIDIKeyboard.Run
 
 		public static bool SendOutputDataZero()
 		{
-			if (rawData[0].Split(',').Length > 1) {
-				Console.Write("Sending output data zero to set values...");
-				string[] ColorArray = rawData[0].Split(',');
+			if (rawData[0].Split(',').Length <= 1) return true;
+			Console.Write("Sending output data zero to set values...");
+			string[] ColorArray = rawData[0].Split(',');
 
-				var midiOut = new InputPort();
-				midiOut.OpenOut(int.Parse(ColorArray[1]));
+			var midiOut = new InputPort();
+			midiOut.OpenOut(int.Parse(ColorArray[1]));
 
-				for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
-					int x = int.Parse(ColorArray[i]);
-					midiOut.MidiOutMsg((byte) x, 0);
-				}
-
-				midiOut.CloseOut();
-				Console.WriteLine(" Done.");
+			for (int i = 2; i + 1 < ColorArray.Length; i += 2) {
+				int x = int.Parse(ColorArray[i]);
+				midiOut.MidiOutMsg((byte) x, 0);
 			}
+
+			midiOut.CloseOut();
+			Console.WriteLine(" Done.");
 
 			return true;
 		}
@@ -80,16 +80,15 @@ namespace MIDIKeyboard.Run
 					string[] loadedValues = rawData[lineID].Split(',');
 					int[]    tempValues   = new int[loadedValues.Length];
 					var      log          = new StringBuilder();
-					bool     isConverted  = false;
 					bool     error        = false;
 					for (int i = 0; i < tempValues.Length; i++) {
 						string value = loadedValues[i].Trim();
-						if (isConverted |= !int.TryParse(value, out tempValues[i])) {
+						if (!int.TryParse(value, out tempValues[i])) {
 							string[] convertValue;
-							if ((convertValue = value.Split('\'')).Length > 1) {
+							if ((convertValue = value.Split('\'')).Length > 1) { //'a' -> GetId("a")
 								tempValues[i] = GetId(convertValue[1][0]);
 								if (convertValue[0][convertValue[0].Length - 1] == '-') {
-									if (i < 2 || i > 1 && tempValues[1] != 1) {
+									if (i < 2 || tempValues[1] != 1) {
 										noErrors = false;
 										error    = true;
 										Error(
@@ -100,10 +99,10 @@ namespace MIDIKeyboard.Run
 
 									tempValues[i] = -tempValues[i];
 								}
-							} else if ((convertValue = value.Split('"')).Length > 1) {
+							} else if ((convertValue = value.Split('"')).Length > 1) { //"a" -> GetId("a")
 								tempValues[i] = GetId(convertValue[1][0]);
 								if (convertValue[0][convertValue[0].Length - 1] == '-') {
-									if (i < 2 || i > 1 && tempValues[1] != 1) {
+									if (i < 2 || tempValues[1] != 1) {
 										noErrors = false;
 										error    = true;
 										Error(
@@ -114,7 +113,7 @@ namespace MIDIKeyboard.Run
 
 									tempValues[i] = -tempValues[i];
 								}
-							} else if (value.Length == 1)
+							} else if (value.Length == 1) //a -> GetId("a")
 								tempValues[i] = GetId(value[0]);
 							else {
 								if (value.Length == 2 && value[0] == '-')
@@ -136,13 +135,13 @@ namespace MIDIKeyboard.Run
 
 					if (!error)
 						Program.values.Add(tempValues);
-					if (isConverted) {
+					
 						log.Append("-> ");
 						foreach (int item in tempValues) {
 							log.Append(item);
 							log.Append(' ');
 						}
-					}
+					
 
 					Console.WriteLine(log);
 				}

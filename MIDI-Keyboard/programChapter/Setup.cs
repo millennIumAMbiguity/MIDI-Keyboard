@@ -84,7 +84,7 @@ namespace MIDIKeyboard
 							new[] {
 								hex4Con,
 								keyMode,
-								Miscellaneous.Miscellaneous.GetId(newKey.KeyChar)
+								Miscellaneous.Miscellaneous.GetId(newKey)
 							});
 						Console.ForegroundColor = ConsoleColor.White;
 						Console.Write($"assigned to {hex4Con}.\n");
