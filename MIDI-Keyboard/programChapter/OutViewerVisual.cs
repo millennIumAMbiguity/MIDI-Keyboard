@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using MIDIKeyboard.dataFolder;
 using MIDIKeyboard.Miscellaneous;
@@ -44,9 +45,14 @@ namespace MIDIKeyboard
 				bool   exists      = Directory.Exists(profilePath);
 				if (!exists)
 					Directory.CreateDirectory(profilePath);
-				string[] files = Directory.GetFiles(profilePath);
+				var files = Directory.GetFiles(profilePath).ToList();
 				Console.ForegroundColor = ConsoleColor.Black;
-				for (int i = 0; i < files.Length; i++) {
+				for (int i = 0; i < files.Count; i++) {
+					if (files[i].Contains("-input")) {
+						files.RemoveAt(i);
+						i--;
+						continue;
+					}
 					Console.BackgroundColor = i % 2 == 0 ? ConsoleColor.Gray : ConsoleColor.White;
 					Console.WriteLine(i + ".\t" + files[i].Split('\\')[1].PadRight(32, ' '));
 				}
