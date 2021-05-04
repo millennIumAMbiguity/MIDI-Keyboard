@@ -7,7 +7,7 @@ namespace MIDIKeyboard.Miscellaneous
 		public static int GetId(char c)
 		{
 			int cId = c;
-			if (c > 106 && c < 123)
+			if (c > 96 && c < 123)
 				cId -= 32;
 
 			return cId;

@@ -12,12 +12,16 @@ midi_key_down_id
   \/
 8323216,0,65 <- key_action   //this would output "a"
 	/\
- key_indedification
+ keymode_indedification
 
-Alternativity you could type the following for the same result:
-8323216, 0, 'a'
-8323216, 0, " "
-8323216, 0, a
+Alternativity, you could type the following for the same result:
+8323216, 0, 'a' <- character
+8323216, 0, "a" <- string
+8323216, a      <- simple character
+
+Spaces between commas are optional. 
+If the intended mode is '0', then you can skip writing it as the program will use that mode as standard as long its not a string formation.
+String are standards as macro and will assume that mode when the second variable is a string.
 
 
 Macro actions:
@@ -28,8 +32,10 @@ midi_key_down_id
         /\
   macro_indedification
 
-A macro is identified by having the midi_key_up_id set to 0.
 A positive ID is key_down and a negative is key_up.
+
+Alternatively, you can use a string format to more easily achieve this:
+8323216,1,"abc" //types abc
 
 
 Single key action with 'F24' as addon key (useful when using this program together with AutoHotkey):
@@ -38,4 +44,4 @@ midi_key_down_id
   \/
 8323216,2,66 <- key_action   //in this case 'b'
 	/\
- key_indedification
+ keyAddon_indedification

@@ -26,14 +26,14 @@ namespace MIDIKeyboard.Run
 			return " + " + addonButtonKey;
 		}
 
-		public static void Key(int id, string valueHex)
+		public static void Key(int id, string valueHex) //id: 0
 		{
 			var sb  = new StringBuilder();
 			var key = (VirtualKeyCode) Program.values[id][2];
-			if (valueHex.Length > 4) {
+			if (valueHex.Length > 4) { //on key down
 				sb.Append("Key_Down '");
 				IS.Keyboard.KeyDown(key);
-			} else {
+			} else { //on key up
 				sb.Append("Key_Up '");
 				IS.Keyboard.KeyUp(key);
 			}
@@ -43,7 +43,29 @@ namespace MIDIKeyboard.Run
 			Console.WriteLine(sb);
 		}
 
-		public static void Addonkey(int id, string valueHex)
+		public static void Macro(int id, string valueHex) //id: 1
+		{
+			if (valueHex.Length <= 4) return; //only run macro on midi key down.
+			var sb = new StringBuilder("macro '");
+			for (int k = 2; k < Program.values[id].Length; k++)
+				if (Program.values[id][k] > 0) {
+					var key = (VirtualKeyCode) Program.values[id][k];
+					IS.Keyboard.KeyDown(key);
+					sb.Append("+");
+					sb.Append(key.ToString());
+					sb.Append('\'');
+				} else {
+					var key = (VirtualKeyCode) (-Program.values[id][k]);
+					IS.Keyboard.KeyUp(key);
+					sb.Append(key.ToString());
+					sb.Append('\'');
+				}
+
+			sb.Append(" on:");
+			Console.WriteLine(sb);
+		}
+		
+		public static void Addonkey(int id, string valueHex) //id: 2
 		{
 			var sb  = new StringBuilder();
 			var key = (VirtualKeyCode) Program.values[id][2];
@@ -61,29 +83,6 @@ namespace MIDIKeyboard.Run
 
 			sb.Append("' on:");
 			Console.WriteLine(sb);
-		}
-
-		public static void Macro(int id, string valueHex)
-		{
-			if (valueHex.Length > 4) {
-				var sb = new StringBuilder("macro '");
-				for (int k = 2; k < Program.values[id].Length; k++)
-					if (Program.values[id][k] > 0) {
-						var key = (VirtualKeyCode) Program.values[id][k];
-						IS.Keyboard.KeyDown(key);
-						sb.Append("+");
-						sb.Append(key.ToString());
-						sb.Append('\'');
-					} else {
-						var key = (VirtualKeyCode) (-Program.values[id][k]);
-						IS.Keyboard.KeyUp(key);
-						sb.Append(key.ToString());
-						sb.Append('\'');
-					}
-
-				sb.Append(" on:");
-				Console.WriteLine(sb);
-			}
 		}
 	}
 }

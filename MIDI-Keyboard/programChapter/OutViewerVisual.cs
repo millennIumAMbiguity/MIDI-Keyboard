@@ -39,27 +39,21 @@ namespace MIDIKeyboard
 
 			int[][] linesInt;
 			{
+				//list available profiles
 				string profilePath = Settings.data.visual_profiles_path;
-
-				bool exists = Directory.Exists(profilePath);
+				bool   exists      = Directory.Exists(profilePath);
 				if (!exists)
 					Directory.CreateDirectory(profilePath);
-
 				string[] files = Directory.GetFiles(profilePath);
-
 				Console.ForegroundColor = ConsoleColor.Black;
 				for (int i = 0; i < files.Length; i++) {
-					if (i % 2 == 0)
-						Console.BackgroundColor = ConsoleColor.Gray;
-					else
-						Console.BackgroundColor = ConsoleColor.White;
-
+					Console.BackgroundColor = i % 2 == 0 ? ConsoleColor.Gray : ConsoleColor.White;
 					Console.WriteLine(i + ".\t" + files[i].Split('\\')[1].PadRight(32, ' '));
 				}
 
 				Console.ResetColor();
 				int.TryParse(Console.ReadLine(), out int datat);
-				profilePath = files[datat];
+				profilePath = files[datat]; //get profile path
 
 
 				string[] lines = File.ReadAllLines(profilePath, Encoding.UTF8);
